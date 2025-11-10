@@ -1,0 +1,82 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Family {
+  id         String      @id @default(uuid())
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+  
+  caregivers Caregiver[]
+  children   Child[]
+  camps      Camp[]
+
+  @@map("families")
+}
+
+model Caregiver {
+  id       String  @id @default(uuid())
+  familyId String  @map("family_id")
+  name     String
+  email    String?
+  phone    String?
+  
+  family   Family  @relation(fields: [familyId], references: [id], onDelete: Cascade)
+
+  @@map("caregivers")
+}
+
+model Child {
+  id          String   @id @default(uuid())
+  familyId    String   @map("family_id")
+  name        String
+  age         Int
+  gender      String?
+  dateOfBirth DateTime @map("date_of_birth")
+  
+  family      Family   @relation(fields: [familyId], references: [id], onDelete: Cascade)
+
+  @@map("children")
+}
+
+model Camp {
+  id                  String         @id @default(uuid())
+  familyId            String         @map("family_id")
+  name                String
+  sourceUrl           String?        @map("source_url")
+  description         String?        @db.Text
+  location            String?
+  startDate           DateTime?      @map("start_date")
+  endDate             DateTime?      @map("end_date")
+  pricing             Decimal?       @db.Decimal(10, 2)
+  pricingDetails      String?        @map("pricing_details")
+  eligibilityCriteria String?        @map("eligibility_criteria") @db.Text
+  registrationProcess Json?          @map("registration_process")
+  lifecycleStage      String         @default("considering") @map("lifecycle_stage")
+  stageUpdatedAt      DateTime       @default(now()) @map("stage_updated_at")
+  rawExtractedData    Json?          @map("raw_extracted_data")
+  createdAt           DateTime       @default(now()) @map("created_at")
+  updatedAt           DateTime       @updatedAt @map("updated_at")
+  
+  family              Family         @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  activities          CampActivity[]
+
+  @@map("camps")
+}
+
+model CampActivity {
+  id                  String  @id @default(uuid())
+  campId              String  @map("camp_id")
+  activityName        String  @map("activity_name")
+  activityDescription String? @map("activity_description") @db.Text
+  
+  camp                Camp    @relation(fields: [campId], references: [id], onDelete: Cascade)
+
+  @@map("camp_activities")
+}
