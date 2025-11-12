@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* React Big Calendar custom styles */
+.rbc-calendar {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.rbc-header {
+  padding: 10px 3px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.rbc-today {
+  background-color: #EFF6FF;
+}
+
+.rbc-event {
+  padding: 2px 5px;
+  font-size: 13px;
+}
+
+.rbc-event-label {
+  font-size: 11px;
+}
+
+.rbc-toolbar button {
+  color: #374151;
+  border: 1px solid #D1D5DB;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #F3F4F6;
+}
+
+.rbc-toolbar button.rbc-active {
+  background-color: #3B82F6;
+  color: white;
+  border-color: #3B82F6;
+}
+
+.rbc-toolbar button.rbc-active:hover {
+  background-color: #2563EB;
+}
